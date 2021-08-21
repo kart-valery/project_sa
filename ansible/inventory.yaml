@@ -1,0 +1,7 @@
+
+---
+all:
+  hosts:
+    serv_01:
+      ansible_host: 192.168.203.35
+      ansible_user: jenkins
