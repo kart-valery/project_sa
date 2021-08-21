@@ -6,7 +6,7 @@ pipeline {
             sh 'sshpass -p "${PASS}" ssh -o StrictHostKeyChecking=no root@${HOST}'
             sh 'apt install sudo -y'
             sh 'sudo apt-get update -y'
-            sh 'sudo apt-get -y install apt-transport-https ca-certificates curl gnupg lsb-release'
+            sh 'sudo apt-get -y install apt-transport-https ca-certificates curl gnupg lsb-release mc'
             sh 'sudo apt-get update'
             sh 'sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose -y'
             git url: 'https://github.com/kart-valery/project_sa.git', branch: 'main', credentialsId: 'kart_git_hub'
