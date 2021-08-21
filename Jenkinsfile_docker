@@ -17,9 +17,7 @@ pipeline {
             sh 'mkdir -p /data/docker/html'
             sh 'cp ./docker/docker-compose.yml /data/docker/docker-compose.yml'
             sh 'sudo chown -R jenkins:jenkins /data/docker'
-            sh 'cd /data/docker/'
-            sh 'ls -la'
-            sh 'docker-compose up -d'
+            sh 'cd /data/docker/ && docker-compose up -d'
             }
     }
 
