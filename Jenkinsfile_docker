@@ -1,0 +1,16 @@
+pipeline {
+   agent any
+   stages {
+    stage('Checkout') {
+      steps {
+            git url: 'https://github.com/kart-valery/as_code.git', branch: 'main', credentialsId: 'kart_git_hub'
+            }
+    }
+}
+    post {
+        always {
+            deleteDir()
+        }
+    
+  }
+}
