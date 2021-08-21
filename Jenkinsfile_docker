@@ -9,7 +9,7 @@ pipeline {
                 sudo apt-get update -y
                 sudo apt-get -y install apt-transport-https ca-certificates curl gnupg lsb-release mc
                 sudo apt-get update
-                sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose ifconfig -y
+                sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose -y
                 git clone https://github.com/kart-valery/project_sa.git
                 mkdir -p /home/old/db
                 mkdir -p /home/old/html
@@ -19,7 +19,7 @@ pipeline {
                 cp ./docker/docker-compose.yml /data/docker/docker-compose.yml
                 sudo chown -R jenkins:jenkins /data/docker
                 cd /data/docker/ && docker-compose up -d
-                ifconfig
+                ip addr show
                 '''
             }
     }
