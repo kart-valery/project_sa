@@ -15,7 +15,7 @@ pipeline {
       steps {
             sh 'cd ~'
             git url: 'https://github.com/kart-valery/project_sa.git', branch: 'main', credentialsId: 'kart_git_hub'
-            sh 'cd prproject_sa'
+            sh 'cd project_sa'
             sh 'ls -la'
             }
     }
