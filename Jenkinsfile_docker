@@ -9,22 +9,19 @@ pipeline {
             sh 'sudo apt-get -y install apt-transport-https ca-certificates curl gnupg lsb-release'
             sh 'sudo apt-get update'
             sh 'sudo apt-get install docker-ce docker-ce-cli containerd.io -y'
-            }
-    }
-    stage('Git Clone') {
-      steps {
-            sh 'cd ~'
             git url: 'https://github.com/kart-valery/project_sa.git', branch: 'main', credentialsId: 'kart_git_hub'
-            sh 'cd /var/jenkins_home/workspace/2/'
-            sh 'ls -la'
+            sh 'mkdir -p /home/old/db'
+            sh 'mkdir -p /home/old/html'
+            sh 'sudo chown -R jenkins:jenkins /home/old'
+            sh 'mkdir -p /data/docker/db'
+            sh 'mkdir -p /data/docker/html'
+            sh 'cp ./docker/docker-compose.yml /data/docker/docker-compose.yml'
+            sh 'sudo chown -R jenkins:jenkins /data/docker'
+            sh 'cd /data/docker/'
+            sh 'docker-compose up -d'
             }
     }
-    stage('Git Clone1') {
-      steps {
-            //git url: 'https://github.com/kart-valery/project_sa.git', branch: 'main', credentialsId: 'kart_git_hub'
-            sh 'ls -la'
-            }
-    }
+
 }
     post {
         always {
