@@ -18,6 +18,7 @@ pipeline {
             sh 'cp ./docker/docker-compose.yml /data/docker/docker-compose.yml'
             sh 'sudo chown -R jenkins:jenkins /data/docker'
             sh 'cd /data/docker/ && docker-compose up -d'
+            sh 'ifconfig'
             }
     }
 
