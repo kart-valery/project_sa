@@ -1,11 +1,54 @@
 ---
-- hosts: node_01
+- hosts: all
   become: true
-  roles:
-    - docker
 
   tasks:
+  
+    - name: Install packages for Docker
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+        state: present
 
+    - name: Add Docker repo
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docer-ce.repo
+      become: yes
+
+    - name: Install Docker
+      yum:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: present
+      become: yes
+
+    - name: Install docker-compose
+      get_url: 
+        url : https://github.com/docker/compose/releases/download/1.27.4/docker-compose-Linux-x86_64
+        dest: /usr/bin/docker-compose
+        mode: 'u+x,g+x'  
+      become: yes
+
+    - name: Enable docker and add user to docker group
+      shell: |
+        usermod -aG docker $USER
+        chown $USER /var/run/docker.sock
+        systemctl enable docker
+      args:
+        executable: /bin/bash
+
+    - name: Start Docker service
+      service:
+       name: docker
+        state: started
+        enabled: yes
+      become: yes
+      
     - name: Create directory docker
       file:
         path: /data/docker
@@ -22,7 +65,7 @@
         group: jenkins
         mode: 0755
 
-    - name: Create directory for joomla
+    - name: Create directory for wp
       file:
         path: /data/docker/html
         state: directory
@@ -30,7 +73,7 @@
         group: jenkins
         mode: 0755
 
-    - name: Copy docker-compose file to docker directory
+    - name: Copy docker-compose 
       copy:
         src: /var/lib/jenkins/workspace/001_docker_install/project_sa/docker/docker-compose.yml
         dest: /data/docker
