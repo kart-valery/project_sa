@@ -70,3 +70,29 @@
       shell: docker-compose up -d
       args:
         chdir: /data/docker
+        
+#  - name: Test. Connectivity checks
+#    block:
+#      - name: Check connection
+#        wait_for:
+#          host: 'localhost'
+#          port: '8000'
+#          timeout: 5
+#        register: out
+#      - name: Send notification OK
+#        slack:
+#          token: "{{ slack_token }}"
+#          msg: 'Checks: success'
+#          channel: '#ansible_notification'
+#          username: 'Ansible'
+#          icon_url: https://slack.com/img/icons/app-57.png
+#          parse: 'full'
+#    rescue#:
+#      - na#me: Send notification ERR
+#        slack:
+#          token: "{{ slack_token }}"
+#          msg: 'Checks: failed'
+#          channel: '#ansible_notification'
+#          username: 'Ansible'
+#          icon_url: https://slack.com/img/icons/app-57.png
+#          parse: 'full'
