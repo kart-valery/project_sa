@@ -4,16 +4,12 @@
   tasks:
 
   - name: Stop docker
-    shell: |
-      docker stop wordpress
-      docker stop mysql
+    shell: "docker stop $(docker ps -a -q)"
     args:
       chdir: /data/docker
 
   - name: Remove docker images
-    shell: |
-      docker rm wordpress
-      docker rm mysql
+    shell: "docker rm $(docker ps -a -q)"
     args:
       chdir: /data/docker
 
