@@ -10,7 +10,7 @@ pipeline {
     }
     stage('Install Docker (playbook)'){
       steps{
-        ansiblePlaybook credentialsId: 'jenkins_node', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inv.yaml', playbook: 'ansible/play.yaml'
+        ansiblePlaybook credentialsId: 'jenkins_node', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inventory.yaml', playbook: 'ansible/inst_docker.yaml'
       }
     }
   }
