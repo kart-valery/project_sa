@@ -38,8 +38,7 @@
     - name: Enable docker and add user to docker group
       shell: |
         usermod -aG docker $USER
-        chown $USER /var/run/docker.sock
-        systemctl enable docker
+        sudo groupadd docker
       args:
         executable: /bin/bash
 
