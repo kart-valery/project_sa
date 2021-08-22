@@ -7,9 +7,18 @@
     - name: Install packages for Docker
       yum:
         name:
+          - install
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
           - yum-utils
           - lvm2
+          - lsb-release
         state: present
+        
+    - name: Curl gpg
+      shell: "curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
 
     - name: Add Docker repo
       get_url:
