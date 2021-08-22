@@ -57,8 +57,8 @@
         state: directory
         recurse: yes
         
-    - name: Test
-      shell: "cat /var/lib/jenkins/workspace/001_docker_install/project_sa/docker/docker-compose.yml"
+#    - name: Test
+#      shell: "cat /var/lib/jenkins/workspace/001_docker_install/project_sa/docker/docker-compose.yml"
       
     - name: Test
       shell: "pwd"
