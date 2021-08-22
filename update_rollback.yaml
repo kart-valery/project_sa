@@ -1,93 +1,94 @@
 ---
 - hosts: all
   become: true
+  tasks:
 
-- name: Stop docker
-  shell: |
-    docker stop wordpress
-    docker stop mysql
-  args:
-    chdir: /data/docker
+  - name: Stop docker
+    shell: |
+      docker stop wordpress
+      docker stop mysql
+    args:
+      chdir: /data/docker
 
-- name: Remove docker images
-  shell: |
-    docker rm wordpress
-    docker rm mysql
-  args:
-    chdir: /data/docker
+  - name: Remove docker images
+    shell: |
+      docker rm wordpress
+      docker rm mysql
+    args:
+      chdir: /data/docker
 
-- name: Run docker-compose up
-  shell: docker-compose -f docker-compose_upd.yaml up -d
-  args:
-    chdir: /data/docker
+  - name: Run docker-compose up
+    shell: docker-compose -f docker-compose_upd.yaml up -d
+    args:
+      chdir: /data/docker
 
-- name: Pause 10
-  pause:
-    seconds: 10
+  - name: Pause 10
+    pause:
+      seconds: 10
 
-- name: Curl and check output (Handle the error)
-  block:
-    - name: Curl content
-      uri:
-        url: "http://localhost:8000"
-        return_content: yes
-      register: content
-#      failed_when: "'WordPress' not in content.content"
-    - name: Print content
-      debug:
-        msg: "{{ content }}"
+  - name: Curl and check output (Handle the error)
+    block:
+      - name: Curl content
+        uri:
+          url: "http://localhost:8000"
+          return_content: yes
+        register: content
+#        failed_when: "'WordPress' not in content.content"
+      - name: Print content
+        debug:
+          msg: "{{ content }}"
  
-  rescue:
-    - name: Send to Slack
-      local_action:
-        module: slack
-        token: XXX/XXX
-        msg: "Upgrade failed, try rollback"
-        channel: "#ansible_notification"
-        username: "Ansible"
+    rescue:
+      - name: Send to Slack
+        local_action:
+          module: slack
+          token: XXX/XXX
+          msg: "Upgrade failed, try rollback"
+          channel: "#ansible_notification"
+          username: "Ansible"
         
-    - name: Stop and remove docker containers
-      shell: docker-compose -f docker-compose_upd.yaml down
-      args:
-        chdir: /data/docker
+      - name: Stop and remove docker containers
+        shell: docker-compose -f docker-compose_upd.yaml down
+        args:
+          chdir: /data/docker
 
-    - name: remove image
-      shell: |
-        docker rmi wordpress
-        docker rmi mysql
+      - name: remove image
+        shell: |
+          docker rmi wordpress
+          docker rmi mysql
 
-    - name: Remove bad docker file
-      shell: rm -f docker-compose_upd.yaml
-      args:
-        chdir: /data/docker
+      - name: Remove bad docker file
+        shell: rm -f docker-compose_upd.yaml
+        args:
+          chdir: /data/docker
 
-    - name: Run old docker file
-      shell: docker-compose -f docker-compose.yaml up -d
-      args:
-        chdir: /data/docker
+      - name: Run old docker file
+        shell: docker-compose -f docker-compose.yaml up -d
+        args:
+          chdir: /data/docker
 
-    - name: Pause 10
-      pause:
-        seconds: 10
+      - name: Pause 10
+        pause:
+          seconds: 10
 
-    - name: Curl and check output
-      block:
-        - name: Curl content
-          uri:
-            url: "http://localhost:8000"
-            return_content: yes
-          register: content
-#          failed_when: "'WordPress' not in content.content"
-        - name: Print content
-          debug:
-            msg: "{{ content }}"
+      - name: Curl and check output
+        block:
+          - name: Curl content
+            uri:
+              url: "http://localhost:8000"
+              return_content: yes
+            register: content
+#            failed_when: "'WordPress' not in content.content"
+          - name: Print content
+            debug:
+              msg: "{{ content }}"
 
-#      rescue:
-#        - name: Send crash message
-#          local_action:
-#            module: slack
-#            token: XXX/XXX
-#            msg: "Rollback Crash"
-#            channel: "#ansible_notification"
-#            username: "jenkins_build"
-#            parse: 'full'
+#        rescue:
+#          - name: Send crash message
+#            local_action:
+#              module: slack
+#              token: XXX/XXX
+#              msg: "Rollback Crash"
+#              channel: "#ansible_notification"
+#              username: "jenkins_build"
+#              parse: 'full'
