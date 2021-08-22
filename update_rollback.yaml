@@ -5,11 +5,13 @@
 
   - name: Stop docker
     shell: "docker stop $(docker ps -a -q)"
+    failed_when: false
     args:
       chdir: /data/docker
 
   - name: Remove docker images
     shell: "docker rm $(docker ps -a -q)"
+    failed_when: false
     args:
       chdir: /data/docker
 
