@@ -32,7 +32,7 @@
         url: "http://localhost:8000"
         return_content: yes
       register: content
-      failed_when: "'WordPress' not in content.content"
+#      failed_when: "'WordPress' not in content.content"
     - name: Print content
       debug:
         msg: "{{ content }}"
@@ -46,5 +46,48 @@
         channel: "#ansible_notification"
         username: "Ansible"
         
-    - name: joomla_rollback
+    - name: Stop and remove docker containers
+      shell: docker-compose -f docker-compose_upd.yaml down
+      args:
+        chdir: /data/docker
 
+    - name: remove image
+      shell: |
+        docker rmi wordpress
+        docker rmi mysql
+
+    - name: Remove bad docker file
+      shell: rm -f docker-compose_upd.yaml
+      args:
+        chdir: /data/docker
+
+    - name: Run old docker file
+      shell: docker-compose -f docker-compose.yaml up -d
+      args:
+        chdir: /data/docker
+
+    - name: Pause 10
+      pause:
+        seconds: 10
+
+    - name: Curl and check output
+      block:
+        - name: Curl content
+          uri:
+            url: "http://localhost:8000"
+            return_content: yes
+          register: content
+#          failed_when: "'WordPress' not in content.content"
+        - name: Print content
+          debug:
+            msg: "{{ content }}"
+
+#      rescue:
+#        - name: Send crash message
+#          local_action:
+#            module: slack
+#            token: XXX/XXX
+#            msg: "Rollback Crash"
+#            channel: "#ansible_notification"
+#            username: "jenkins_build"
+#            parse: 'full'
