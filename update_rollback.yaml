@@ -31,19 +31,25 @@
           url: "http://localhost:8000"
           return_content: yes
         register: content
+        failed_when: true
 #        failed_when: "'WordPress' not in content.content"
-      - name: Print content
-        debug:
-          msg: "{{ content }}"
+#      - name: Print content
+#        debug:
+#          msg: "{{ content }}"
+
+      - name: mv -f upd to stable
+        shell: mv -f docker-compose_upd.yml docker-compose.yml
+        args:
+          chdir: /data/docker
  
     rescue:
-      - name: Send to Slack
-        local_action:
-          module: slack
-          token: XXX/XXX
-          msg: "Upgrade failed, try rollback"
-          channel: "#ansible_notification"
-          username: "Ansible"
+#      - name: Send to Slack
+#        local_action:
+#          module: slack
+#          token: XXX/XXX
+#          msg: "Upgrade failed, try rollback"
+#          channel: "#ansible_notification"
+#          username: "Ansible"
         
       - name: Run upd docker-compose
         shell: docker-compose -f docker-compose_upd.yml down
