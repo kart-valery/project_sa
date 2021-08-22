@@ -57,6 +57,18 @@
         state: directory
         recurse: yes
         
+    - name: Create backup directory for database
+      file:
+        path: /data/docker/backup/db
+        state: directory
+        recurse: yes
+
+    - name: Create backup directory for wp
+      file:
+        path: /data/docker/backup/html
+        state: directory
+        recurse: yes
+        
 
 #    - name: Copy docker-compose 
 #      copy:
