@@ -82,9 +82,9 @@
               return_content: yes
             register: content
 #            failed_when: "'WordPress' not in content.content"
-          - name: Print content
-            debug:
-              msg: "{{ content }}"
+#          - name: Print content
+#            debug:
+#              msg: "{{ content }}"
 
 #        rescue:
 #          - name: Send crash message
