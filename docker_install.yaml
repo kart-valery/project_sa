@@ -54,32 +54,32 @@
       file:
         path: /data/docker
         state: directory
-        owner: jenkins
-        group: jenkins
+        owner: docker
+        group: docker
         mode: 0755
 
     - name: Create directory for database
       file:
         path: /data/docker/db
         state: directory
-        owner: jenkins
-        group: jenkins
+        owner: docker
+        group: docker
         mode: 0755
 
     - name: Create directory for wp
       file:
         path: /data/docker/html
         state: directory
-        owner: jenkins
-        group: jenkins
+        owner: docker
+        group: docker
         mode: 0755
 
     - name: Copy docker-compose 
       copy:
         src: /var/lib/jenkins/workspace/001_docker_install/project_sa/docker/docker-compose.yml
         dest: /data/docker
-        owner: jenkins
-        group: jenkins
+        owner: docker
+        group: docker
         mode: 0644
 
     - name: Run docker-compose
