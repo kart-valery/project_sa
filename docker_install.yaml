@@ -64,7 +64,7 @@
 
     - name: Copy docker-compose 
       copy:
-        src: ./docker/docker-compose.yml
+        src: /var/lib/jenkins/workspace/001_docker_install/docker/docker-compose.yml
         dest: /data/docker
         owner: docker
         group: docker
