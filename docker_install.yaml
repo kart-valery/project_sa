@@ -49,24 +49,18 @@
         state: started
         enabled: yes
       become: yes
-      
-    - name: Create directory docker
-      file:
-        path: /data/docker
-        state: directory
-        owner: docker
-        group: docker
-        mode: 0755
 
     - name: Create directory for database
       file:
         path: /data/docker/db
         state: directory
+        recurse: yes
 
     - name: Create directory for wp
       file:
         path: /data/docker/html
         state: directory
+        recurse: yes
 
     - name: Copy docker-compose 
       copy:
