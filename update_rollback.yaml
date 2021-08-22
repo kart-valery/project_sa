@@ -14,7 +14,7 @@
       chdir: /data/docker
 
   - name: Run docker-compose up
-    shell: docker-compose -f docker-compose_upd.yaml up -d
+    shell: docker-compose -f /data/docker/docker-compose_upd.yaml up -d
     args:
       chdir: /data/docker
 
