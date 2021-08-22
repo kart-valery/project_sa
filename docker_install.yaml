@@ -36,11 +36,7 @@
       become: yes
 
     - name: Enable docker and add user to docker group
-      shell: |
-        usermod -aG docker $USER
-        sudo groupadd docker
-      args:
-        executable: /bin/bash
+      shell: " usermod -aG docker $USER"
 
     - name: Start Docker service
       service:
