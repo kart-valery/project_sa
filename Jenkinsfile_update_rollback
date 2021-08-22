@@ -1,1 +1,20 @@
+pipeline{
+  agent any
 
+  stages{
+    stage('Update and rollback'){
+      steps{
+        git url: 'https://github.com/kart-valery/project_sa.git', branch: 'main', credentialsId: 'kart_git_hub'
+        sh 'scp ./docker/docker-compose_upd.yml root@192.168.203.35:/data/docker/'
+        sh 'ansible-playbook -i ./ansible/inventory.yaml update_rollback.yaml'
+      }
+    }
+  }
+  post {
+        always {
+            deleteDir()
+    
+            
+        }
+  }
+}
