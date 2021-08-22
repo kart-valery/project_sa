@@ -1,0 +1,44 @@
+---
+- hosts: node_01
+  become: true
+  roles:
+    - docker
+
+  tasks:
+
+    - name: Create directory docker
+      file:
+        path: /data/docker
+        state: directory
+        owner: jenkins
+        group: jenkins
+        mode: 0755
+
+    - name: Create directory for database
+      file:
+        path: /data/docker/db
+        state: directory
+        owner: jenkins
+        group: jenkins
+        mode: 0755
+
+    - name: Create directory for joomla
+      file:
+        path: /data/docker/html
+        state: directory
+        owner: jenkins
+        group: jenkins
+        mode: 0755
+
+    - name: Copy docker-compose file to docker directory
+      copy:
+        src: /var/lib/jenkins/workspace/001_docker_install/project_sa/docker/docker-compose.yml
+        dest: /data/docker
+        owner: jenkins
+        group: jenkins
+        mode: 0644
+
+    - name: Run docker-compose
+      shell: docker-compose up -d
+      args:
+        chdir: /data/docker
