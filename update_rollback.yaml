@@ -3,6 +3,11 @@
   become: true
   tasks:
 
+  - name: Global-test yamllint
+    shell: yamllint -d relaxed /data/docker/docker-compose_upd.yml
+    args:
+      chdir: /data/docker
+
   - name: Stop docker
     shell: "docker stop $(docker ps -a -q)"
     failed_when: false
@@ -58,7 +63,8 @@
 
       - name: remove image
         shell: "docker rmi -f $(docker images -a -q)"
-        failed_when: false
+        #for tests rollback uncomment next line
+#        failed_when: false
 
       - name: Remove bad docker file
         shell: rm -f docker-compose_upd.yml
