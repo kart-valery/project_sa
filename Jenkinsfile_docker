@@ -1,23 +1,21 @@
-pipeline {
-   agent any
-   stages {
-    stage('Clone Repo') {
-      steps {
+pipeline{
+  agent any
+
+  stages{
+    stage('Clone repo'){
       steps{
-        git url: 'https://github.com/kart-valery/project_sa.git',
-          credentialsId: 'kart_git_hub'
-      }
-    }
-    stage('Install Docker (playbook)'){
-      steps{
-        ansiblePlaybook credentialsId: 'jenkins_node', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inventory.yaml', playbook: 'ansible/inst_docker.yaml'
+        git url: 'https://github.com/kart-valery/project_sa.git', branch: 'main', credentialsId: 'kart_git_hub'
+        sh 'scp ./docker/docker-compose.yml root@192.168.203.35:/data/docker/'
+        sh 'ansible all -i ./ansible/inventory.yaml -m ping'
+        sh 'ansible-playbook -i ./ansible/inventory.yaml docker_install.yaml'
       }
     }
   }
-    post {
+  post {
         always {
             deleteDir()
-        }
     
+            
+        }
   }
 }
