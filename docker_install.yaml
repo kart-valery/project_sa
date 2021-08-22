@@ -56,16 +56,23 @@
         path: /data/docker/html
         state: directory
         recurse: yes
+        
+    - name: Test
+      shell: "cat /var/lib/jenkins/workspace/001_docker_install/project_sa/docker/docker-compose.yml"
+      
+    - name: Test
+      shell: "pwd"
 
-    - name: Copy docker-compose 
-      copy:
-        src: /var/lib/jenkins/workspace/001_docker_install/project_sa/docker/docker-compose.yml
-        dest: /data/docker/docker-compose.yml
-        owner: root
-        group: docker
-        mode: '0644'
 
-    - name: Run docker-compose
-      shell: docker-compose up -d
-      args:
-        chdir: /data/docker
+#    - name: Copy docker-compose 
+#      copy:
+#        src: /var/lib/jenkins/workspace/001_docker_install/project_sa/docker/docker-compose.yml
+#        dest: /data/docker/docker-compose.yml
+#        owner: root
+#        group: docker
+#        mode: '0644'
+
+#    - name: Run docker-compose
+#      shell: docker-compose up -d
+#      args:
+#        chdir: /data/docker
