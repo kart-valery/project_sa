@@ -37,7 +37,7 @@
           return_content: yes
         register: content
         failed_when: true
-#        failed_when: "'WordPress' not in content.content"
+        failed_when: "'WordPress' not in content.content"
 #      - name: Print content
 #        debug:
 #          msg: "{{ content }}"
@@ -87,7 +87,7 @@
               url: "http://localhost:8000"
               return_content: yes
             register: content
-#            failed_when: "'WordPress' not in content.content"
+            failed_when: "'WordPress' not in content.content"
 #          - name: Print content
 #            debug:
 #              msg: "{{ content }}"
