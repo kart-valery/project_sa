@@ -57,9 +57,8 @@
           chdir: /data/docker
 
       - name: remove image
-        shell: |
-          docker rmi wordpress
-          docker rmi mysql
+        shell: "docker rmi -f $(docker images -a -q)"
+        failed_when: false
 
       - name: Remove bad docker file
         shell: rm -f docker-compose_upd.yml
