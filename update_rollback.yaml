@@ -64,7 +64,7 @@
       - name: remove image
         shell: "docker rmi -f $(docker images -a -q)"
         #for tests rollback uncomment next line
-#        failed_when: false
+        failed_when: false
 
       - name: Remove bad docker file
         shell: rm -f docker-compose_upd.yml
